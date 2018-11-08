@@ -2,22 +2,42 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 
-def get_links(page_link):
-    
-  page = urlopen(page_link)
-  soup = BeautifulSoup(page, 'html.parser')
+# First page of the boss.az IT category
+first_page_link = 'https://boss.az/vacancies?action=index&controller=vacancies&only_path=true&search%5Bcategory_id%5D=38&type=vacancies'
 
+# open url using urllib library
+first_page = urlopen(first_page_link)
 
-  name_box = soup.find_all('div', attrs={'class': 'results-i'})
+soup = BeautifulSoup(first_page, 'html.parser')
 
-  data = []
-  for i in name_box:
-      if i.text.__contains__("PROQRAM"):
-        link = i.find('a', attrs={'class': 'results-i-link'})
-        data.append( 'https://boss.az' + link['href'])
+list_of_pages = soup.find_all('span', attrs={'class': 'page '})
 
+# add number of pages link to the list
+pages = []
+pages.append(first_page_link)
 
-  print(data)
-quote_page = 'https://boss.az/vacancies?action=index&controller=vacancies&only_path=true&search%5Bcategory_id%5D=38&type=vacancies'
+for p in list_of_pages:
+    p
+    link = p.find('a')
+    pg2 = 'https://boss.az' + link['href']
+    pages.append(pg2)
 
-get_links(quote_page)
+# gets all the links related to keyword
+def get_links(page_links, keyword):
+    links = []
+    for p_l in page_links:
+
+        page = urlopen(p_l)
+        soup = BeautifulSoup(page, 'html.parser')
+
+        list_of_jobs = soup.find_all('div', attrs={'class': 'results-i'})
+
+        for i in list_of_jobs:
+            if i.text.__contains__(keyword):
+                link = i.find('a', attrs={'class': 'results-i-link'})
+                links.append('https://boss.az' + link['href'])
+
+    print(links)
+
+# this will return all the links which has the PROQRAM keyword in their title
+get_links(pages, "PROQRAM")
