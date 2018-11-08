@@ -17,12 +17,13 @@ pages = []
 pages.append(first_page_link)
 
 for p in list_of_pages:
-    p
     link = p.find('a')
     pg2 = 'https://boss.az' + link['href']
     pages.append(pg2)
 
 # gets all the links related to keyword
+
+
 def get_links(page_links, keyword):
     links = []
     for p_l in page_links:
@@ -37,7 +38,8 @@ def get_links(page_links, keyword):
                 link = i.find('a', attrs={'class': 'results-i-link'})
                 links.append('https://boss.az' + link['href'])
 
-    print(links)
+    return links
+
 
 # this will return all the links which has the PROQRAM keyword in their title
 get_links(pages, "PROQRAM")
