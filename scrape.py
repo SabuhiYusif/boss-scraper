@@ -3,10 +3,10 @@ from bs4 import BeautifulSoup
 
 
 # First page of the boss.az IT category
-first_page_link = 'https://boss.az/vacancies?action=index&controller=vacancies&only_path=true&search%5Bcategory_id%5D=38&type=vacancies'
+main_page_link = 'https://boss.az/vacancies?action=index&controller=vacancies&only_path=true&search%5Bcategory_id%5D=38&type=vacancies'
 
 # open url using urllib library
-first_page = urlopen(first_page_link)
+first_page = urlopen(main_page_link)
 
 soup = BeautifulSoup(first_page, 'html.parser')
 
@@ -14,16 +14,16 @@ list_of_pages = soup.find_all('span', attrs={'class': 'page '})
 
 # add number of pages link to the list
 pages = []
-pages.append(first_page_link)
+pages.append(main_page_link)
 
 for p in list_of_pages:
     link = p.find('a')
     pg2 = 'https://boss.az' + link['href']
     pages.append(pg2)
 
-# gets all the links related to keyword
 
 
+# this will return all the links which has the PROQRAM keyword in their title
 def get_links(page_links, keyword):
     links = []
     for p_l in page_links:
@@ -41,5 +41,7 @@ def get_links(page_links, keyword):
     return links
 
 
-# this will return all the links which has the PROQRAM keyword in their title
-get_links(pages, "PROQRAM")
+
+links = get_links(pages, "PROQRAM")
+
+print(links)
